@@ -12,6 +12,10 @@
             --bg-dark: #1a0f14; /* Deep Velvet Plum */
             --card-bg: rgba(255, 255, 255, 0.08);
             --text-light: #fdf6f6;
+            --glow-x: 75%;
+            --glow-y: 18%;
+            --parallax-x: 0px;
+            --parallax-y: 0px;
         }
 
         * {
@@ -21,7 +25,9 @@
         }
 
         body {
-            background: radial-gradient(circle at top right, #3a1c28, var(--bg-dark));
+            background:
+                radial-gradient(circle at var(--glow-x) var(--glow-y), rgba(212, 175, 55, 0.16), transparent 36%),
+                radial-gradient(circle at top right, #3a1c28, var(--bg-dark));
             color: var(--text-light);
             font-family: 'Montserrat', sans-serif;
             min-height: 100dvh;
@@ -31,6 +37,35 @@
             align-items: center;
             position: relative;
             padding: 14px;
+            transition: background 0.8s ease;
+        }
+
+        /* Sound Toggle Button */
+        .sound-toggle {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 30;
+            background: rgba(26, 15, 20, 0.72);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.45);
+            color: var(--primary);
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.74rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        .sound-toggle:hover {
+            background: var(--primary);
+            color: var(--bg-dark);
+            font-weight: 600;
         }
 
         /* Floating Petals / Sparkles Background */
@@ -40,6 +75,8 @@
             pointer-events: none;
             z-index: 0;
             overflow: hidden;
+            transform: translate3d(var(--parallax-x), var(--parallax-y), 0);
+            transition: transform 0.25s ease-out;
         }
 
         .particle {
@@ -48,6 +85,55 @@
             border-radius: 50%;
             opacity: 0.4;
             animation: floatUp linear infinite;
+        }
+
+        .particle.rose {
+            background: var(--secondary);
+        }
+
+        .burst-sparkle {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 15;
+            animation: burstOut 0.95s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes burstOut {
+            0% {
+                transform: translate(-50%, -50%) scale(0.3);
+                opacity: 0.95;
+            }
+            100% {
+                transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* Mini Falling Love Hearts on Click */
+        .falling-heart {
+            position: fixed;
+            top: -28px;
+            pointer-events: none;
+            z-index: 25;
+            user-select: none;
+            filter: drop-shadow(0 2px 6px rgba(232, 180, 184, 0.45));
+            animation: heartFall linear forwards;
+        }
+
+        @keyframes heartFall {
+            0% {
+                transform: translate3d(0, 0, 0) rotate(0deg) scale(0.75);
+                opacity: 0.95;
+            }
+            50% {
+                transform: translate3d(var(--sway), 50dvh, 0) rotate(18deg) scale(1.05);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translate3d(calc(var(--sway) * -0.5), 108dvh, 0) rotate(-18deg) scale(0.85);
+                opacity: 0;
+            }
         }
 
         @keyframes floatUp {
@@ -345,12 +431,16 @@
 </head>
 <body>
 
+    <button type="button" class="sound-toggle" id="soundToggle" onclick="toggleBirthdayMusic()" aria-label="Toggle birthday melody">
+        🔊 Tune On
+    </button>
+
     <div class="particles" id="particles" aria-hidden="true"></div>
     <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
     <div class="card-container" id="cardContainer">
 
-        <!-- PAGE 1: COVER & PHOTO 1 -->
+        <!-- PAGE 1: COVER & PHOTO 3 -->
         <div class="page active" id="page1">
             <div>
                 <p class="subtitle">28th November</p>
@@ -360,7 +450,7 @@
 
             <div class="photo-frame">
                 <div class="photo-inner" id="inner1">
-                    <img id="preview1" src="Photos/IMG-20260513-WA0012.jpg" alt="Dharitri Photo 1">
+                    <img id="preview1" src="Photos/IMG20231203185243.jpg" alt="Dharitri Photo 3">
                 </div>
             </div>
 
@@ -424,7 +514,7 @@
             </div>
         </div>
 
-        <!-- PAGE 3: FAVORITE MEMORY & PHOTO 2 -->
+        <!-- PAGE 3: FAVORITE MEMORY & PHOTO 1 -->
         <div class="page" id="page3">
             <div>
                 <p class="subtitle">Chapter of Us</p>
@@ -433,7 +523,7 @@
 
             <div class="photo-frame square-frame">
                 <div class="photo-inner" id="inner2">
-                    <img id="preview2" src="Photos/IMG20231115162454.jpg" alt="Dharitri Photo 2">
+                    <img id="preview2" src="Photos/IMG-20260513-WA0012.jpg" alt="Dharitri Photo 1">
                 </div>
             </div>
 
@@ -469,7 +559,7 @@
             </div>
         </div>
 
-        <!-- PAGE 5: PHOTO 3 + LOVE LETTER -->
+        <!-- PAGE 5: PHOTO 2 + LOVE LETTER -->
         <div class="page" id="page5">
             <div>
                 <p class="subtitle">My Queen</p>
@@ -478,7 +568,7 @@
 
             <div class="photo-frame">
                 <div class="photo-inner" id="inner3">
-                    <img id="preview3" src="Photos/IMG20231203185243.jpg" alt="Dharitri Photo 3">
+                    <img id="preview3" src="Photos/IMG20231115162454.jpg" alt="Dharitri Photo 2">
                 </div>
             </div>
 
@@ -521,9 +611,151 @@
     </div>
 
     <script>
+        // --- 0. BIRTHDAY MELODY (AUTO-UNLOCKS ON FIRST INTERACTION) ---
+        const birthdayNotes = [
+            { freq: 261.63, dur: 0.34 }, // C4 - Hap-
+            { freq: 261.63, dur: 0.34 }, // C4 - py
+            { freq: 293.66, dur: 0.65 }, // D4 - Birth-
+            { freq: 261.63, dur: 0.65 }, // C4 - day
+            { freq: 349.23, dur: 0.65 }, // F4 - to
+            { freq: 329.63, dur: 1.15 }, // E4 - you,
+
+            { freq: 261.63, dur: 0.34 }, // C4 - Hap-
+            { freq: 261.63, dur: 0.34 }, // C4 - py
+            { freq: 293.66, dur: 0.65 }, // D4 - Birth-
+            { freq: 261.63, dur: 0.65 }, // C4 - day
+            { freq: 392.00, dur: 0.65 }, // G4 - to
+            { freq: 349.23, dur: 1.15 }, // F4 - you,
+
+            { freq: 261.63, dur: 0.34 }, // C4 - Hap-
+            { freq: 261.63, dur: 0.34 }, // C4 - py
+            { freq: 523.25, dur: 0.65 }, // C5 - Birth-
+            { freq: 440.00, dur: 0.65 }, // A4 - day
+            { freq: 349.23, dur: 0.65 }, // F4 - dear
+            { freq: 329.63, dur: 0.65 }, // E4 - Dha-
+            { freq: 293.66, dur: 1.15 }, // D4 - ri-tri,
+
+            { freq: 466.16, dur: 0.34 }, // Bb4 - Hap-
+            { freq: 466.16, dur: 0.34 }, // Bb4 - py
+            { freq: 440.00, dur: 0.65 }, // A4 - Birth-
+            { freq: 349.23, dur: 0.65 }, // F4 - day
+            { freq: 392.00, dur: 0.65 }, // G4 - to
+            { freq: 349.23, dur: 1.30 }  // F4 - you!
+        ];
+
+        let audioCtx = null;
+        let musicAllowed = true;
+        let isMelodyRunning = false;
+        let melodyTimer = null;
+        let noteIndex = 0;
+
+        function ensureAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return null;
+                audioCtx = new AudioContextClass();
+            }
+            return audioCtx;
+        }
+
+        function playSingleNote(freq, duration) {
+            const ctx = ensureAudioContext();
+            if (!ctx || ctx.state !== 'running') return;
+
+            const now = ctx.currentTime;
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, now);
+
+            gain.gain.setValueAtTime(0.0001, now);
+            gain.gain.exponentialRampToValueAtTime(0.08, now + 0.04);
+            gain.gain.exponentialRampToValueAtTime(0.0001, now + duration * 0.95);
+
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            osc.start(now);
+            osc.stop(now + duration);
+        }
+
+        function scheduleNextNote() {
+            if (!musicAllowed) {
+                isMelodyRunning = false;
+                return;
+            }
+            const ctx = ensureAudioContext();
+            if (!ctx || ctx.state !== 'running') {
+                isMelodyRunning = false;
+                return;
+            }
+
+            isMelodyRunning = true;
+            const currentNote = birthdayNotes[noteIndex];
+            playSingleNote(currentNote.freq, currentNote.dur);
+            noteIndex = (noteIndex + 1) % birthdayNotes.length;
+            const pauseAfter = noteIndex === 0 ? 1400 : 0;
+            melodyTimer = setTimeout(scheduleNextNote, currentNote.dur * 1000 + pauseAfter);
+        }
+
+        function unlockAndStartMusic() {
+            if (!musicAllowed) return;
+            const ctx = ensureAudioContext();
+            if (!ctx) return;
+
+            if (ctx.state === 'suspended') {
+                ctx.resume().then(() => {
+                    if (musicAllowed && !isMelodyRunning) {
+                        scheduleNextNote();
+                    }
+                }).catch(() => {});
+            } else if (ctx.state === 'running' && !isMelodyRunning) {
+                scheduleNextNote();
+            }
+        }
+
+        function toggleBirthdayMusic() {
+            const btn = document.getElementById('soundToggle');
+            if (musicAllowed) {
+                musicAllowed = false;
+                isMelodyRunning = false;
+                clearTimeout(melodyTimer);
+                if (btn) btn.innerText = '🔇 Tune Off';
+            } else {
+                musicAllowed = true;
+                if (btn) btn.innerText = '🔊 Tune On';
+                unlockAndStartMusic();
+            }
+        }
+
+        // Attempt immediate start if browser allows autoplay, plus unlock on first touch/click
+        window.addEventListener('load', unlockAndStartMusic);
+        ['pointerdown', 'keydown'].forEach((evtName) => {
+            document.addEventListener(evtName, () => {
+                if (musicAllowed && !isMelodyRunning) {
+                    unlockAndStartMusic();
+                }
+            }, { passive: true });
+        });
+
         // --- 1. PAGE NAVIGATION & SMOOTH TRANSITIONS ---
         let currentPage = 1;
         const totalPages = 6;
+        const pageGlowPositions = [
+            { x: '75%', y: '18%' },
+            { x: '25%', y: '25%' },
+            { x: '80%', y: '75%' },
+            { x: '20%', y: '75%' },
+            { x: '65%', y: '30%' },
+            { x: '50%', y: '20%' }
+        ];
+
+        function syncPageGlow(pageNum) {
+            const pos = pageGlowPositions[pageNum - 1] || pageGlowPositions[0];
+            document.documentElement.style.setProperty('--glow-x', pos.x);
+            document.documentElement.style.setProperty('--glow-y', pos.y);
+        }
 
         function updateDots() {
             for (let p = 1; p <= totalPages; p++) {
@@ -553,6 +785,7 @@
 
             document.getElementById(`page${pageNum}`).classList.add('active');
             currentPage = pageNum;
+            syncPageGlow(pageNum);
             updateDots();
 
             if (pageNum === totalPages) {
@@ -635,11 +868,11 @@
         setInterval(updateAgeTimer, 1000);
         updateAgeTimer();
 
-        // --- 3. FLOATING SPARKLES & CONFETTI ---
+        // --- 3. INTERACTIVE BACKGROUND, FALLING LOVE HEARTS & CONFETTI ---
         const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 25; i++) {
+        for (let i = 0; i < 32; i++) {
             const p = document.createElement('div');
-            p.className = 'particle';
+            p.className = 'particle' + (i % 3 === 0 ? ' rose' : '');
             const size = Math.random() * 5 + 2 + 'px';
             p.style.width = size;
             p.style.height = size;
@@ -648,6 +881,80 @@
             p.style.animationDelay = (Math.random() * 5) + 's';
             particlesContainer.appendChild(p);
         }
+
+        function handlePointerMove(clientX, clientY) {
+            const xPercent = (clientX / window.innerWidth) * 100;
+            const yPercent = (clientY / window.innerHeight) * 100;
+            const moveX = ((clientX / window.innerWidth) - 0.5) * -22;
+            const moveY = ((clientY / window.innerHeight) - 0.5) * -22;
+
+            document.documentElement.style.setProperty('--glow-x', `${xPercent.toFixed(1)}%`);
+            document.documentElement.style.setProperty('--glow-y', `${yPercent.toFixed(1)}%`);
+            document.documentElement.style.setProperty('--parallax-x', `${moveX.toFixed(1)}px`);
+            document.documentElement.style.setProperty('--parallax-y', `${moveY.toFixed(1)}px`);
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            handlePointerMove(e.clientX, e.clientY);
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        function spawnFallingLoveHearts(count = 7) {
+            const heartSymbols = ['💕', '💖', '💗', '❤️', '✨'];
+            for (let i = 0; i < count; i++) {
+                const heart = document.createElement('span');
+                heart.className = 'falling-heart';
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = (Math.random() * 92 + 4) + 'vw';
+                heart.style.fontSize = (Math.random() * 10 + 14) + 'px';
+                const sway = ((Math.random() - 0.5) * 90).toFixed(1) + 'px';
+                const duration = (Math.random() * 1.4 + 2.1).toFixed(2) + 's';
+                const delay = (Math.random() * 0.25).toFixed(2) + 's';
+
+                heart.style.setProperty('--sway', sway);
+                heart.style.animationDuration = duration;
+                heart.style.animationDelay = delay;
+
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 3900);
+            }
+        }
+
+        function spawnSparkleBurst(x, y) {
+            const colors = ['#d4af37', '#e8b4b8', '#fdf6f6'];
+            for (let i = 0; i < 10; i++) {
+                const spark = document.createElement('div');
+                spark.className = 'burst-sparkle';
+                const angle = (Math.PI * 2 * i) / 10 + (Math.random() * 0.35);
+                const distance = 35 + Math.random() * 55;
+                const dx = Math.cos(angle) * distance + 'px';
+                const dy = Math.sin(angle) * distance + 'px';
+                const size = (Math.random() * 5 + 4) + 'px';
+
+                spark.style.left = x + 'px';
+                spark.style.top = y + 'px';
+                spark.style.width = size;
+                spark.style.height = size;
+                spark.style.background = colors[i % colors.length];
+                spark.style.setProperty('--dx', dx);
+                spark.style.setProperty('--dy', dy);
+
+                document.body.appendChild(spark);
+                setTimeout(() => spark.remove(), 950);
+            }
+        }
+
+        document.addEventListener('click', (e) => {
+            spawnFallingLoveHearts(6);
+            if (!e.target.closest('button')) {
+                spawnSparkleBurst(e.clientX, e.clientY);
+            }
+        }, { passive: true });
 
         function launchConfetti() {
             const layer = document.getElementById('confettiLayer');
