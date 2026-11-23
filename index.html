@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Dharitri ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #d4af37; /* Champagne Gold */
+            --secondary: #e8b4b8; /* Dusty Rose */
+            --bg-dark: #1a0f14; /* Deep Velvet Plum */
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --text-light: #fdf6f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #3a1c28, var(--bg-dark));
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 14px;
+        }
+
+        /* Floating Petals / Sparkles Background */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(105vh) scale(0); opacity: 0; }
+            50% { opacity: 0.65; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        /* Confetti Layer */
+        .confetti-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 20;
+            overflow: hidden;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            top: -12px;
+            width: 8px;
+            height: 14px;
+            border-radius: 2px;
+            opacity: 0.9;
+            animation: confettiFall linear forwards;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(105vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Card Container */
+        .card-container {
+            width: 100%;
+            max-width: 450px;
+            height: min(86dvh, 740px);
+            position: relative;
+            z-index: 1;
+            perspective: 1200px;
+            touch-action: pan-y;
+        }
+
+        /* Individual Pages */
+        .page {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 24px;
+            padding: 28px 22px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(30px) scale(0.95);
+            transition: all 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .page.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+            z-index: 2;
+        }
+
+        .page.prev {
+            opacity: 0;
+            transform: translateY(-30px) scale(0.95);
+        }
+
+        /* Typography */
+        .script-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: clamp(2.8rem, 8vw, 3.4rem);
+            color: var(--primary);
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+            line-height: 1.1;
+        }
+
+        .serif-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.35rem, 4.5vw, 1.7rem);
+            color: var(--secondary);
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 0.78rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .message-text {
+            font-size: clamp(0.86rem, 2.5vw, 0.95rem);
+            line-height: 1.65;
+            color: #f3e5e5;
+            font-weight: 300;
+        }
+
+        /* Photo Frame */
+        .photo-frame {
+            width: clamp(165px, 42vw, 205px);
+            height: clamp(165px, 42vw, 205px);
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            padding: 6px;
+            position: relative;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            margin: 6px auto;
+        }
+
+        .photo-frame:hover {
+            transform: scale(1.04);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+        }
+
+        .photo-frame.square-frame {
+            border-radius: 18px;
+            width: clamp(210px, 56vw, 240px);
+            height: clamp(175px, 44vw, 210px);
+        }
+
+        .photo-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: inherit;
+            background: rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .photo-inner img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Live Age Timer Grid */
+        .timer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 9px;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .time-box {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(212, 175, 55, 0.25);
+            border-radius: 12px;
+            padding: 10px 5px;
+        }
+
+        .time-val {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.45rem;
+            font-weight: 600;
+            color: var(--primary);
+            display: block;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .time-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--secondary);
+        }
+
+        /* Love Reasons List */
+        .reasons-list {
+            text-align: left;
+            width: 100%;
+            list-style: none;
+        }
+
+        .reasons-list li {
+            background: rgba(255, 255, 255, 0.04);
+            margin-bottom: 9px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border-left: 3px solid var(--primary);
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .reasons-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Navigation Controls */
+        .nav-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 8px;
+            gap: 8px;
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 9px 18px;
+            border-radius: 30px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.76rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: var(--bg-dark);
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.25;
+            cursor: not-allowed;
+        }
+
+        .dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.22);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 0;
+        }
+
+        .dot.active {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+
+        /* Ring & Forever Trigger */
+        .ring-icon {
+            font-size: 2.8rem;
+            animation: pulseGlow 2s infinite;
+        }
+
+        .forever-trigger {
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.25s ease;
+        }
+
+        .forever-trigger:hover {
+            transform: scale(1.04);
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.4)); }
+            50% { transform: scale(1.12); filter: drop-shadow(0 0 18px rgba(212, 175, 55, 0.9)); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="particles" id="particles" aria-hidden="true"></div>
+    <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+    <div class="card-container" id="cardContainer">
+
+        <!-- PAGE 1: COVER & PHOTO 1 -->
+        <div class="page active" id="page1">
+            <div>
+                <p class="subtitle">28th November</p>
+                <h1 class="script-title">Happy Birthday</h1>
+                <h2 class="serif-heading">My Dearest Dharitri</h2>
+            </div>
+
+            <div class="photo-frame">
+                <div class="photo-inner" id="inner1">
+                    <img id="preview1" src="photos/1000260087_3.jpg" alt="Dharitri Birthday Cake">
+                </div>
+            </div>
+
+            <p class="message-text">
+                To my favorite person, my best friend, and the woman I am going to spend forever with.
+            </p>
+
+            <div class="nav-controls">
+                <button class="btn" disabled>Back</button>
+                <div class="dots" id="dots1"></div>
+                <button class="btn" onclick="nextPage()">Open Card →</button>
+            </div>
+        </div>
+
+        <!-- PAGE 2: LIVE AGE TIMER (28 NOV 2000) -->
+        <div class="page" id="page2">
+            <div>
+                <p class="subtitle">Since 28 Nov 2000</p>
+                <h2 class="serif-heading">The World Got Brighter</h2>
+            </div>
+
+            <p class="message-text">
+                Every single second since the day you were born has been leading me straight to you. You have blessed this world for:
+            </p>
+
+            <div class="timer-grid">
+                <div class="time-box">
+                    <span class="time-val" id="years">00</span>
+                    <span class="time-label">Years</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-val" id="months">00</span>
+                    <span class="time-label">Months</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-val" id="days">00</span>
+                    <span class="time-label">Days</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-val" id="hours">00</span>
+                    <span class="time-label">Hours</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-val" id="minutes">00</span>
+                    <span class="time-label">Minutes</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-val" id="seconds">00</span>
+                    <span class="time-label">Seconds</span>
+                </div>
+            </div>
+
+            <p class="message-text" style="font-style: italic; color: var(--secondary);">
+                "And I can't wait to count the next 70 years right beside you."
+            </p>
+
+            <div class="nav-controls">
+                <button class="btn" onclick="prevPage()">← Back</button>
+                <div class="dots" id="dots2"></div>
+                <button class="btn" onclick="nextPage()">Next →</button>
+            </div>
+        </div>
+
+        <!-- PAGE 3: FAVORITE MEMORY & PHOTO 2 -->
+        <div class="page" id="page3">
+            <div>
+                <p class="subtitle">Chapter of Us</p>
+                <h2 class="serif-heading">My Favorite View</h2>
+            </div>
+
+            <div class="photo-frame square-frame">
+                <div class="photo-inner" id="inner2">
+                    <img id="preview2" src="photos/1000202687_2.jpg" alt="Dharitri and Pijush Together">
+                </div>
+            </div>
+
+            <p class="message-text">
+                Looking at you reminds me how lucky I am. Whether we are laughing over nothing or planning our future, every moment with you feels like home.
+            </p>
+
+            <div class="nav-controls">
+                <button class="btn" onclick="prevPage()">← Back</button>
+                <div class="dots" id="dots3"></div>
+                <button class="btn" onclick="nextPage()">Next →</button>
+            </div>
+        </div>
+
+        <!-- PAGE 4: WHY I WANT TO MARRY YOU -->
+        <div class="page" id="page4">
+            <div>
+                <p class="subtitle">From My Heart</p>
+                <h2 class="serif-heading">Why You're The One</h2>
+            </div>
+
+            <ul class="reasons-list">
+                <li>✨ <strong>Your Kindness:</strong> The way you care so deeply makes everyone around you feel loved.</li>
+                <li>✨ <strong>Your Smile:</strong> One look at you instantly fixes my hardest days.</li>
+                <li>✨ <strong>Your Strength:</strong> You inspire me to become a better man every single day.</li>
+                <li>✨ <strong>Our Bond:</strong> With you, I don't just have a partner—I have my soulmate.</li>
+            </ul>
+
+            <div class="nav-controls">
+                <button class="btn" onclick="prevPage()">← Back</button>
+                <div class="dots" id="dots4"></div>
+                <button class="btn" onclick="nextPage()">Next →</button>
+            </div>
+        </div>
+
+        <!-- PAGE 5: PHOTO 3 + LOVE LETTER -->
+        <div class="page" id="page5">
+            <div>
+                <p class="subtitle">My Queen</p>
+                <h2 class="serif-heading">Pure Magic</h2>
+            </div>
+
+            <div class="photo-frame">
+                <div class="photo-inner" id="inner3">
+                    <img id="preview3" src="photos/1000260080_2.jpg" alt="Dharitri by the Water">
+                </div>
+            </div>
+
+            <p class="message-text">
+                May this year bring you all the happiness, success, and peace your beautiful heart deserves. I promise to always stand behind you, hold your hand, and protect your smile.
+            </p>
+
+            <div class="nav-controls">
+                <button class="btn" onclick="prevPage()">← Back</button>
+                <div class="dots" id="dots5"></div>
+                <button class="btn" onclick="nextPage()">Forever →</button>
+            </div>
+        </div>
+
+        <!-- PAGE 6: WOULD-BE WIFE VOW -->
+        <div class="page" id="page6">
+            <div>
+                <p class="subtitle">Our Future</p>
+                <h2 class="serif-heading">To My Would-Be Wife</h2>
+            </div>
+
+            <div class="ring-icon">💍</div>
+
+            <p class="message-text">
+                Dharitri, celebrating your birthday today is special, but knowing I get to call you my wife one day is the greatest gift of my life.<br><br>
+                Here is to our upcoming wedding, our future home, and a lifetime of birthdays together.
+            </p>
+
+            <button class="forever-trigger" onclick="launchConfetti()" title="Click for a celebration!">
+                <h3 class="script-title" style="font-size: 2.5rem;">I Love You Forever</h3>
+            </button>
+
+            <div class="nav-controls">
+                <button class="btn" onclick="prevPage()">← Back</button>
+                <div class="dots" id="dots6"></div>
+                <button class="btn" onclick="goToPage(1)">Replay ↺</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- 1. PAGE NAVIGATION & SMOOTH TRANSITIONS ---
+        let currentPage = 1;
+        const totalPages = 6;
+
+        function updateDots() {
+            for (let p = 1; p <= totalPages; p++) {
+                const dotContainer = document.getElementById(`dots${p}`);
+                dotContainer.innerHTML = '';
+                for (let d = 1; d <= totalPages; d++) {
+                    const dot = document.createElement('button');
+                    dot.type = 'button';
+                    dot.setAttribute('aria-label', `Go to page ${d}`);
+                    dot.className = 'dot' + (d === currentPage ? ' active' : '');
+                    dot.onclick = () => goToPage(d);
+                    dotContainer.appendChild(dot);
+                }
+            }
+        }
+
+        function goToPage(pageNum) {
+            if (pageNum < 1 || pageNum > totalPages) return;
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageEl = document.getElementById(`page${i}`);
+                pageEl.classList.remove('active', 'prev');
+                if (i < pageNum) {
+                    pageEl.classList.add('prev');
+                }
+            }
+
+            document.getElementById(`page${pageNum}`).classList.add('active');
+            currentPage = pageNum;
+            updateDots();
+
+            if (pageNum === totalPages) {
+                launchConfetti();
+            }
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) goToPage(currentPage + 1);
+        }
+
+        function prevPage() {
+            if (currentPage > 1) goToPage(currentPage - 1);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextPage();
+            if (e.key === 'ArrowLeft') prevPage();
+        });
+
+        let touchStartX = 0;
+        const cardContainer = document.getElementById('cardContainer');
+
+        cardContainer.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        cardContainer.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].screenX;
+            const deltaX = touchEndX - touchStartX;
+            if (deltaX < -55) nextPage();
+            if (deltaX > 55) prevPage();
+        }, { passive: true });
+
+        updateDots();
+
+        // --- 2. LIVE AGE TIMER (28TH NOVEMBER 2000) ---
+        const birthDate = new Date(2000, 10, 28, 0, 0, 0);
+
+        function updateAgeTimer() {
+            const now = new Date();
+
+            let years = now.getFullYear() - birthDate.getFullYear();
+            let months = now.getMonth() - birthDate.getMonth();
+            let days = now.getDate() - birthDate.getDate();
+            let hours = now.getHours() - birthDate.getHours();
+            let minutes = now.getMinutes() - birthDate.getMinutes();
+            let seconds = now.getSeconds() - birthDate.getSeconds();
+
+            if (seconds < 0) {
+                seconds += 60;
+                minutes--;
+            }
+            if (minutes < 0) {
+                minutes += 60;
+                hours--;
+            }
+            if (hours < 0) {
+                hours += 24;
+                days--;
+            }
+            if (days < 0) {
+                const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += prevMonth.getDate();
+                months--;
+            }
+            if (months < 0) {
+                months += 12;
+                years--;
+            }
+
+            document.getElementById('years').innerText = String(years).padStart(2, '0');
+            document.getElementById('months').innerText = String(months).padStart(2, '0');
+            document.getElementById('days').innerText = String(days).padStart(2, '0');
+            document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+            document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+        }
+
+        setInterval(updateAgeTimer, 1000);
+        updateAgeTimer();
+
+        // --- 3. FLOATING SPARKLES & CONFETTI ---
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 25; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const size = Math.random() * 5 + 2 + 'px';
+            p.style.width = size;
+            p.style.height = size;
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.animationDuration = (Math.random() * 8 + 6) + 's';
+            p.style.animationDelay = (Math.random() * 5) + 's';
+            particlesContainer.appendChild(p);
+        }
+
+        function launchConfetti() {
+            const layer = document.getElementById('confettiLayer');
+            const colors = ['#d4af37', '#e8b4b8', '#fdf6f6', '#f4d06f'];
+
+            for (let i = 0; i < 40; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + 'vw';
+                piece.style.background = colors[i % colors.length];
+                piece.style.animationDuration = (Math.random() * 2 + 2.2) + 's';
+                piece.style.animationDelay = (Math.random() * 0.45) + 's';
+                layer.appendChild(piece);
+
+                setTimeout(() => piece.remove(), 3000);
+            }
+        }
+    </script>
+</body>
+</html>
