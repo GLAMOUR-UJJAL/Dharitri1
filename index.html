@@ -40,34 +40,6 @@
             transition: background 0.8s ease;
         }
 
-        /* Sound Toggle Button */
-        .sound-toggle {
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            z-index: 30;
-            background: rgba(26, 15, 20, 0.72);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(212, 175, 55, 0.45);
-            color: var(--primary);
-            padding: 8px 14px;
-            border-radius: 999px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.74rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-        }
-
-        .sound-toggle:hover {
-            background: var(--primary);
-            color: var(--bg-dark);
-            font-weight: 600;
-        }
-
         /* Floating Petals / Sparkles Background */
         .particles {
             position: fixed;
@@ -431,10 +403,6 @@
 </head>
 <body>
 
-    <button type="button" class="sound-toggle" id="soundToggle" onclick="toggleBirthdayMusic()" aria-label="Toggle birthday melody">
-        🔊 Tune On
-    </button>
-
     <div class="particles" id="particles" aria-hidden="true"></div>
     <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
@@ -644,7 +612,6 @@
         ];
 
         let audioCtx = null;
-        let musicAllowed = true;
         let isMelodyRunning = false;
         let melodyTimer = null;
         let noteIndex = 0;
@@ -681,10 +648,6 @@
         }
 
         function scheduleNextNote() {
-            if (!musicAllowed) {
-                isMelodyRunning = false;
-                return;
-            }
             const ctx = ensureAudioContext();
             if (!ctx || ctx.state !== 'running') {
                 isMelodyRunning = false;
@@ -700,13 +663,12 @@
         }
 
         function unlockAndStartMusic() {
-            if (!musicAllowed) return;
             const ctx = ensureAudioContext();
             if (!ctx) return;
 
             if (ctx.state === 'suspended') {
                 ctx.resume().then(() => {
-                    if (musicAllowed && !isMelodyRunning) {
+                    if (!isMelodyRunning) {
                         scheduleNextNote();
                     }
                 }).catch(() => {});
@@ -715,25 +677,10 @@
             }
         }
 
-        function toggleBirthdayMusic() {
-            const btn = document.getElementById('soundToggle');
-            if (musicAllowed) {
-                musicAllowed = false;
-                isMelodyRunning = false;
-                clearTimeout(melodyTimer);
-                if (btn) btn.innerText = '🔇 Tune Off';
-            } else {
-                musicAllowed = true;
-                if (btn) btn.innerText = '🔊 Tune On';
-                unlockAndStartMusic();
-            }
-        }
-
-        // Attempt immediate start if browser allows autoplay, plus unlock on first touch/click
         window.addEventListener('load', unlockAndStartMusic);
         ['pointerdown', 'keydown'].forEach((evtName) => {
             document.addEventListener(evtName, () => {
-                if (musicAllowed && !isMelodyRunning) {
+                if (!isMelodyRunning) {
                     unlockAndStartMusic();
                 }
             }, { passive: true });
